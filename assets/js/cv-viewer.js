@@ -58,7 +58,7 @@ try {
     const library = await import('https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.min.mjs');
     library.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.worker.min.mjs';
     const source = new URLSearchParams(location.search).get('file');
-    const url = new URL(source || '../assets/documents/CV_Flroencia_Alicia_Sombra.pdf', location.href);
+    const url = new URL(source || '../assets/documents/CV_Florencia_Alicia_Sombra.pdf?v=20261102', location.href);
     if (url.origin !== location.origin) throw new Error('Origen inválido');
     pdf = await library.getDocument(url.href).promise;
     $('#total').textContent = `/ ${pdf.numPages}`; $('#page').max = pdf.numPages;
