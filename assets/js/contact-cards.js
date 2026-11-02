@@ -18,7 +18,7 @@
         if (requested) return;
         requested = true;
         try {
-            const response = await fetch('https://github-contributions-api.jogruber.de/v4/Flor125?y=last', { signal: AbortSignal.timeout(10000) });
+            const response = await fetch('https://github-contributions-api.jogruber.de/v4/florenciasombra?y=last', { signal: AbortSignal.timeout(10000) });
             if (!response.ok) throw new Error();
             const data = await response.json();
             if (!Array.isArray(data.contributions)) throw new Error();
@@ -35,7 +35,7 @@
         const head = document.createElement('div'); head.className = 'contact-preview-head';
         const img = document.createElement('img'); img.src = 'assets/images/profile-pic.jpg'; img.alt = '';
         const text = document.createElement('div'), name = document.createElement('strong'), detail = document.createElement('p');
-        name.textContent = kind === 'github' ? 'Flor125 / GitHub' : 'Florencia Sombra / LinkedIn';
+        name.textContent = kind === 'github' ? 'florenciasombra / GitHub' : 'Florencia Sombra / LinkedIn';
         detail.textContent = kind === 'linkedin' ? t('Desarrollo backend · Abierta a oportunidades', 'Backend development · Open to opportunities') : days ? `${days.reduce((sum,d) => sum + d.count, 0).toLocaleString(english() ? 'en' : 'es')} ${t('contribuciones en el último año', 'contributions in the last year')}` : failed ? t('Actividad no disponible por el momento.', 'Activity is currently unavailable.') : t('Cargando contribuciones…', 'Loading contributions…');
         text.append(name, detail); head.append(img, text); content.append(head);
         if (kind === 'github') {
