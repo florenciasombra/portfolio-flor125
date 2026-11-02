@@ -7,7 +7,7 @@
     const status = root.querySelector('.contact-copy-status');
     const email = 'sombraflorencia097@gmail.com';
     const english = () => document.documentElement.lang === 'en';
-    let active = null, days = null, failed = false, requested = false, timer, closeTimer, clearStatusTimer;
+    let active = null, days = null, failed = false, requested = false, retryAfter = 0, timer, closeTimer, clearStatusTimer;
     const t = (es, en) => english() ? en : es;
     function labels() {
         root.setAttribute('aria-label', t('Contacto rápido', 'Quick contact'));
@@ -15,15 +15,16 @@
         if (active) show(active);
     }
     async function contributions() {
-        if (requested) return;
+        if (requested || Date.now() < retryAfter) return;
         requested = true;
+        failed = false;
         try {
             const response = await fetch('https://github-contributions-api.jogruber.de/v4/florenciasombra?y=last', { signal: AbortSignal.timeout(10000) });
             if (!response.ok) throw new Error();
             const data = await response.json();
             if (!Array.isArray(data.contributions)) throw new Error();
             days = data.contributions.filter((day) => /^\d{4}-\d{2}-\d{2}$/.test(day.date) && Number.isFinite(day.count) && day.count >= 0).sort((a,b) => a.date.localeCompare(b.date));
-        } catch { failed = true; }
+        } catch { failed = true; requested = false; retryAfter = Date.now() + 30000; }
         if (active === 'github') show('github');
     }
     function show(kind) {
